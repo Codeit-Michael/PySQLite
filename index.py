@@ -1,26 +1,29 @@
 import sqlite3
 
 # create & connect to db
-connect = sqlite3.connect('student.db') # run like ordinary py file, python filename.py, to create the db
-cursr = connect.cursor() # create a cursor
+connect = sqlite3.connect('student.db')
+cursr = connect.cursor()
 
 
 # Create a table
-cursr.execute("""CREATE TABLE students (
-		fname text,
-		lname text,
-		email text
-	)""") # can done in 1 line but messy
-"""
-5 SQLite Datatypes
- NULL => None
- INTEGER => int
- REAL => float
- TEXT => str
- BLOB => files (image)
-"""
-connect.commit() # committing
-connect.close() # closing connections
+# cursr.execute("""CREATE TABLE students (
+# 		fname text,
+# 		lname text,
+# 		email text
+# 	)""")
 
 
-# Insert one into record table 
+# Inserting a data in table
+# connect.execute("INSERT INTO students VALUES ('Kel', 'Maranan', 'marananm030@gmail.com')")
+
+
+# Inserting many data in table
+the_students = [
+    ('Agg','Mar','aggMar03@gmail.com'),
+    ('Michael','Maranan','michaelmaranan030@gmail.com')
+]
+connect.executemany("INSERT INTO students VALUES (?,?,?)", the_students)
+
+
+connect.commit()
+connect.close()
