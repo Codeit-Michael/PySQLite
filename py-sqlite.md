@@ -29,9 +29,9 @@ connect.close() # closing connections
 -always make sure you put `.commit()` and `.close()` on every end of your configuration
 
  
-# Inserting one data in table
+## Inserting one data in table
 ```
-connect.execute("INSERT INTO students VALUES ('Kel', 'Maranan', 'marananm030@gmail.com')")
+cursr.execute("INSERT INTO students VALUES ('Kel', 'Maranan', 'marananm030@gmail.com')")
 
 connect.commit() # committing
 connect.close() # closing connections
@@ -39,15 +39,45 @@ connect.close() # closing connections
 -Run it, and it's all fine
 
 
-# Inserting many data in table
+## Inserting many data in table
 -We're gonna use lists
 ```
 the_students = [
     ('Agg','Mar','aggMar03@gmail.com'),
     ('Michael','Maranan','michaelmaranan030@gmail.com')
 ]
-connect.executemany("INSERT INTO students VALUES (?,?,?)", the_students)
+cursr.executemany("INSERT INTO students VALUES (?,?,?)", the_students)
 
 connect.commit() # committing
 connect.close() # closing connections
+```
+
+
+## Fetch object
+```
+cursr.execute("SELECT * FROM students")
+# print(cursr.fetchone()) # 1 object
+# print(cursr.fetchmany(2)) # select given amount
+print(cursr.fetchall()) # all
+
+connect.commit() # committing
+connect.close() # closing connections
+```
+
+
+## Format results
+-Example, db has:
+```
+the_students = [
+#     ('Agg','Mar','aggMar03@gmail.com'),
+#     ('Michael','Maranan','michaelmaranan030@gmail.com')
+# ]
+```
+-And we try to access the 1st attribute from the 1st tuple. so we do:
+```
+print(cursr.fetchall()[0][0])
+
+# or maybe
+studs = cursr.all()
+for item in studs: print f'{studs[0]} {studs[1]} {studs[2]}'
 ```
