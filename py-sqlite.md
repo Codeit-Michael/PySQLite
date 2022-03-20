@@ -123,3 +123,44 @@ cnt.commit()
 cursr.execute("SELECT * FROM students")
 print(cursr.fetchall())
 ```
+
+
+## Delete
+```
+cursr.execute("DELETE from students WHERE rowid = 4")
+```
+-NOTE: When making a delete function, you should convert the id into str coz if not, it won't work
+```
+def delete-one(id)
+	...
+	cursr.execute("DELETE from students WHERE rowid = (?)", id)
+	...
+delete-one('2')
+```
+
+
+## Ordering
+```
+# ASC -ascending,DESC -descending,
+cursr.execute("SELECT rowid,* FROM students ORDER BY fname ASC")
+```
+
+
+## And, Or
+```
+# AND -both. You do many AND; make cursr.execute(..., AND ... AND ... ) 
+cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%030%' AND rowid = 3")
+# OR -either, or. You do many OR; make cursr.execute(..., OR ... OR ... )
+cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%030%' OR rowid = 2")
+```
+
+## Limit
+```
+cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%03%' OR rowid = 3 LIMIT 1")
+```
+
+## Delete a whole Table
+```
+cursr.execute("DROP TABLE students")
+cnt.commit()
+```

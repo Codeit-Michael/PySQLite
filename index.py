@@ -24,7 +24,6 @@ cursr = cnt.cursor()
 # ]
 # cursr.executemany("INSERT INTO students VALUES (?,?,?)", the_students)
 
-
 # # Fetch/Show objects and Row Ids
 # cursr.execute("SELECT rowid,fname FROM students")
 # print(cursr.fetchall())
@@ -35,13 +34,33 @@ cursr = cnt.cursor()
 # print(cursr.fetchall())
 
 
-# Update
+# # Update
 # cursr.execute("UPDATE students SET fname = 'Maykel' WHERE rowid = 1")
 
+
+# # Delete
+# cursr.execute("DELETE from students WHERE rowid = 4")
+
+
+# # Order by
+# cursr.execute("SELECT rowid,* FROM students ORDER BY fname ASC")
+# print(cursr.fetchall())
+
+
+# # And, Or
+# cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%030%' AND rowid = 3")
+# cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%030%' OR rowid = 2")
+# print(cursr.fetchall())
+
+
+# # Limit
+# cursr.execute("SELECT rowid,* FROM students WHERE email LIKE '%03%' OR rowid = 3 LIMIT 1")
+
+
+# # Delete a whole table
+# cursr.execute("DROP TABLE students")
 # cnt.commit()
 
-cursr.execute("SELECT rowid,* FROM students")
-print(cursr.fetchall())
 
 cnt.commit()
 cnt.close()
