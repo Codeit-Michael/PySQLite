@@ -81,3 +81,45 @@ print(cursr.fetchall()[0][0])
 studs = cursr.all()
 for item in studs: print f'{studs[0]} {studs[1]} {studs[2]}'
 ```
+
+
+## Get objects through table classifications and Primary key
+```
+cursr.execute("SELECT rowid FROM students") # see row id
+cursr.execute("SELECT rowid,* FROM students") # see row id and all objects
+
+cursr.execute("SELECT fname FROM students") # see only specific attributes
+print(cursr.fetchall())
+```
+
+
+## Use `WHERE` for searching
+```
+cursr.execute("SELECT * FROM students WHERE fname = 'Kel'")
+
+# you can search through number, exact value, or in greater/less than
+cursr.execute("SELECT * FROM students WHERE age >= 15")
+
+
+print(cursr.fetchall())
+```
+-Search similar things or objects with the same characters in the said attributes. 
+Format: `cursr.execute("SELECT * FROM students WHERE att LIKE '%chars'")`
+```
+# cursr.execute("SELECT * FROM students WHERE fname LIKE 'ke%'") # starts%
+# cursr.execute("SELECT * FROM students WHERE email LIKE '%ar%'") # %mid%
+# cursr.execute("SELECT * FROM students WHERE fname LIKE '%el'") # %ends
+```
+
+
+## Update
+-Syntax: cursr.execute("UPDATE students SET att = val WHERE att = val")
+```
+cursr.execute("UPDATE students SET fname = 'Maykel' WHERE rowid = 1")
+
+cnt.commit()
+
+# you can print it to see if it really works
+cursr.execute("SELECT * FROM students")
+print(cursr.fetchall())
+```
