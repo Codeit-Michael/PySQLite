@@ -3,8 +3,8 @@ from person import Person
 import sqlite3
 
 class Student():
-	def __init__(self,firstname,lastname,birthdate,age,phone,address,Id):
-		super().__init__(firstname,lastname,birthdate,age,phone,address)
+	def __init__(self,firstname,lastname,sex,birthdate,age,phone,address,Id):
+		super().__init__(firstname,lastname,fullname,sex,birthdate,age,phone,address)
 		self.Id = Id
 		
 		# missing

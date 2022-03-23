@@ -2,10 +2,13 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 # cnt = sqlite3.connect('school.db')
 # cursr = cnt.cursor()
-
+# cursr.execute("DROP TABLE professors")
+# cnt.commit
 # cursr.execute("""CREATE TABLE professors (
 # 	firstname text,
 # 	lastname text ,
+# 	fullname text,
+# 	sex text,
 # 	birthdate text,
 # 	age integer,
 # 	phone text,
@@ -19,11 +22,10 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 # cnt = sqlite3.connect('school.db')
 # cursr = cnt.cursor()
-
 # cursr.execute("""CREATE TABLE subjects (
-# 	name text
+# 	name text,
+# 	professor null
 # )""")
-
 # cnt.commit()
 # cnt.close()
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
@@ -32,7 +34,10 @@
 
 # cursr.execute("""CREATE TABLE courses (
 # 	name text,
-# 	for_year integer
+# 	for_year integer,
+# 	courseId text,
+# 	students text,
+# 	subjects text
 # )""")
 
 # cnt.commit()
@@ -44,6 +49,7 @@
 # cursr.execute("""CREATE TABLE students (
 # 	firstname text,
 # 	lastname text ,
+#	sex text,
 # 	birthdate text,
 # 	age integer,
 # 	phone text,
