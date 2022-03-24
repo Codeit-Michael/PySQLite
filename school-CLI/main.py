@@ -24,7 +24,8 @@
 # cursr = cnt.cursor()
 # cursr.execute("""CREATE TABLE subjects (
 # 	name text,
-# 	professor null
+# 	professor null,
+# 	related null
 # )""")
 # cnt.commit()
 # cnt.close()
