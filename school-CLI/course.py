@@ -28,7 +28,19 @@ class Course():
 		self.students.append(student)
 		self.cursr.execute("UPDATE courses SET students = ? WHERE courseId = ?",(json.dumps(self.students),course_id))
 		self.cnt.commit()
-		print(f'{student} enrolled in {course}-{yr}')
+		return print(f'{student} enrolled in {course}-{yr}')
+
+	def add_subjects(self,subject,course,yr):
+		course_id = f'{course}/yr-{yr}'
+		self.cursr.execute("SELECT subjects FROM courses WHERE name = ?",(course,))
+		subjects = self.cursr.fetchall()
+		self.subjects = json.loads(students[0][0])
+		if len(self.subjects) >= 6:
+			return print(f'{course}-{yr} reach it\'s number of subjects limit, cannot add subject anymore...')
+		self.subjects.append(subject)
+		self.cursr.execute("UPDATE courses SET subjects = ? WHERE courseId = ?",(json.dumps(self.subjects),course_id))
+		self.cnt.commit()
+		return print(f'{subject} added in {course}-{yr}')
 
 
 if __name__ == '__main__':

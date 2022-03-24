@@ -8,6 +8,7 @@ class Professor:
 	def create_professor(self,firstname,lastname,sex,birthdate,age,phone,address,salary):
 		self.firstname = firstname
 		self.lastname = lastname
+		self.fullname = f'{self.firstname} {self.lastname}',
 		self.sex = sex
 		self.birthdate = birthdate
 		self.age = age
@@ -19,7 +20,7 @@ class Professor:
 		self.cursr.execute("INSERT INTO professors VALUES (?,?,?,?,?,?,?,?,?,?)",(
 			self.firstname,
 			self.lastname,
-			f'{self.firstname} {self.lastname}',
+			self.fullname,
 			self.sex,
 			self.birthdate,
 			self.age,
@@ -29,12 +30,7 @@ class Professor:
 			json.dumps(self.teaching)
 		))
 		self.cnt.commit()
-		return print(f'Professor {self.firstname} created successfully')
-	"""
-	SOLVE TOMMOROW INTERNAL SERVER ERROR
-
-	"""
-
+		return print(f'Professor {self.firstname} successfully created as a professor...')
 
 	def add_teaching(self,subject,professor):
 		self.cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,))

@@ -49,11 +49,12 @@
 # cursr.execute("""CREATE TABLE students (
 # 	firstname text,
 # 	lastname text ,
-#	sex text,
+# 	fullname text,
+# 	sex text,
 # 	birthdate text,
 # 	age integer,
 # 	phone text,
-# 	address text
+# 	address text,
 # 	Id text,
 # 	year integer,
 # 	course text
