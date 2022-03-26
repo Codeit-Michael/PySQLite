@@ -21,47 +21,67 @@ class Subject():
 
 
 	def add_professor(self,subject,professor):
-		prof = self.cursr.execute("SELECT fullname FROM professors WHERE fullname = ?",(professor,))
-		
-		if len(prof.fetchall()) == 0:
-			return print(f'Prof.\'{professor}\' not found...')
-		
-		elif self.cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)) != None:
+		subject_tuple, professor_tuple = (subject,), (professor,)
+		if subject_tuple not in self.cursr.execute("SELECT name FROM subjects") or professor_tuple not in self.cursr.execute("SELECT fullname IN professors"):
+			return print('SUbject and/or Professor not found...')
+
+		# configuring objects
+		professor_teachings = self.cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,)).fetchone()
+		pt_list = json.loads(professor_teachings[0])
+
+		# looking if the subject has professor already
+		if self.cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)).fetchone()[0] != None:
 			return print('Subject has professor already...')
 		
+		# updating the server
 		self.cursr.execute("UPDATE subjects SET professor = ? WHERE name = ?",(professor,subject))
-		print(f'Subject added to Prof.{professor}\'s teachings')
+		self.cursr.execute("UPDATE professors SET teaching = ? WHERE fullname = ?",(json.dumps(pt_list),professor))
+
+		# saving and closing
 		self.cnt.commit()
 		self.cnt.close()
 
+		print(f'Subject added to Prof.{professor}\'s teachings')
+
 
 	def add_related(self,subject,course,yr):
+		course_tuple,subject_tuple = (subject,),(course,)
+		if subject_tuple not in self.cursr.execute("SELECT name FROM subjects") or course_tuple not in self.cursr.execute("SELECT name FROM courses"):
+			return print('Subject and/or Course not found...')
+
+		# configuring objects
 		course_id = f'{subject}/yr-{yr}'
-		related = self.cursr.execute("SELECT name FROM courses WHERE courseId = ?",(course_id,))
-		
-		if len(related.fetchall()) == 0:
-			return print(f'\'{course}-{yr}\' not found...')
-		
-		related = self.cursr.execute("SELECT related FROM subjects WHERE name = ?",(subject,))
-		self.related = json.loads(related[0][0])
-		if subject in self.related:
-			return print('Subject already into the course')
-		
-		self.related.append(subject)
-		self.cursr.execute("UPDATE subjects SET related = ? WHERE name = ?",(json.loads(self.add_related),subject))
-		print(f'{course}-{yr} now has {subject}')
+		course_related = self.cursr.execute("SELECT related FROM subjects WHERE courseId = ?",(course_id,)).fetchone()
+		course_subjects = self.cursr.execute("SELECT subjects FROM courses WHERE name = ?",(subject,)).fetchone()
+		cr_list = json.loads(course_related[0])
+		cs_list = json.loads(course_subjects[0])
+
+		# adding course and subject to their lists
+		if course in cr_list or subject in cs_list:
+			return print('Course has Subject already or Subject in Course already')
+		cr_list.append(course)
+		cs_list.append(subject)
+
+		# updating the server
+		self.cursr.execute("UPDATE subjects SET related = ? WHERE name = ?",(cr_list,subject))
+		self.cursr.execute("UPDATE courses SET subjects = ? WHERE courseId = ?",(cs_list,course_id))
+
+		# saving and closing
 		self.cnt.commit()
-		self.cnt.close()		
+		self.cnt.close()
+
+		return print(f'{subject} added in {course}-{yr} successfully')
 
 
 if __name__ == '__main__':
 	pass
 	# g1 = Subject().create_subject('NSTP')
 	# g1 = Subject().add_professor('NSTP','Michael Maranan')
+	p1 = Subject().add_related('NSTP','BSBA',1)
 
-	# cnt = sqlite3.connect('school.db')
-	# cursr = cnt.cursor()
-	# cursr.execute("SELECT * FROM subjects")
-	# print(cursr.fetchall())
-	# cnt.commit()
-	# cnt.close()
+	cnt = sqlite3.connect('school.db')
+	cursr = cnt.cursor()
+	hello = cursr.execute("SELECT * FROM subjects").fetchall()
+	print(hello)
+	cnt.commit()
+	cnt.close()

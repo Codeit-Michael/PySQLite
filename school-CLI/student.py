@@ -13,27 +13,30 @@ class Student():
 		self.age = age
 		self.phone = phone
 		self.address = address
-		self.Id = Id
 		self.year = year
 		self.course = course
 
 		self.cursr.execute("INSERT INTO students (?,?,?,?,?,?,?,?,?,?,?)",(
 			self.firstname,
 			self.lastname,
-			self.fullname
+			self.fullname,
 			self.sex,
 			self.birthdate,
 			self.age,
 			self.phone,
 			self.address,
-			self.Id,
 			self.year,
 			self.course	
 		))
 		return print(f'{self.fullname} successfully created as a student...')
 
-	def add_
+	# def add_
 
 
 if __name__ == '__main__':
 	pass
+
+	# cnt = sqlite3.connect('school.db')
+	# cursr = cnt.cursor()
+	# cnt.commit()
+	# cnt.close()

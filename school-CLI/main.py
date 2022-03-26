@@ -56,7 +56,6 @@
 # 	age integer,
 # 	phone text,
 # 	address text,
-# 	Id text,
 # 	year integer,
 # 	course text
 # )""")
