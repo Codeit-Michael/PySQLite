@@ -55,17 +55,21 @@ class Course():
 		if student_tuple not in self.cursr.execute("SELECT fullname FROM students") or course_tuple not in self.cursr.execute("SELECT name FROM courses"):
 			return print('Error 404')
 
+		# configuring objects
 		course_id = f'{course}/yr-{yr}'
 		course_students = self.cursr.execute("SELECT students FROM courses WHERE courseId = ?",(course_id,)).fetchone()
 		cs_list = json.loads(course_students[0])
 
+		# checking the student
 		if student in cs_list or self.cursr.execute("SELECT course FROM students WHERE fullname = ?",(student,)).fetchone()[0] != None:
 			return print('Student is already enrolled...')
 
+		# updating the server
 		cs_list.append(student)
 		self.cursr.execute("UPDATE courses SET students = ? WHERE courseId = ?",(json.dumps(cs_list),course_id))
 		self.cursr.execute("UPDATE students SET course = ? WHERE fullname =?",(course,student))
 
+		# committing and closing
 		self.cnt.commit()
 		self.cnt.close()
 
