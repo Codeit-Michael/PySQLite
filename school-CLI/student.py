@@ -60,8 +60,3 @@ class Student():
 
 if __name__ == '__main__':
 	pass
-
-	# cnt = sqlite3.connect('school.db')
-	# cursr = cnt.cursor()
-	# cnt.commit()
-	# cnt.close()

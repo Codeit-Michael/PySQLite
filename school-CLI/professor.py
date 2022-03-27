@@ -58,18 +58,12 @@ class Professor:
 		print(f'Added {subject} into {professor}\'s teachings')
 
 
+	def get_salary(self,professor):
+		subjects = self.cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,)).fetchone()
+		subject_list = json.loads(subjects[0])
+		salary = 5000 * len(subject_list)
+		return salary
+
+
 if __name__ == "__main__":
 	pass
-	# p1 = Professor().create_professor('Kevin','Belingon','male','08/15/93',28,'09162596988','Bucal,Cavite',30500.05)
-	# p1 = Professor().add_teaching('NSTP','Michael Maranan')
-
-	# cnt = sqlite3.connect('school.db')
-	# cursr = cnt.cursor()
-	# tups = ('Kevin',)
-	# if tups in cursr.execute("SELECT firstname FROM professors"):
-	# 	print(cursr.execute("SELECT firstname FROM professors"))
-	# else:
-	# 	print(False)
-	# # print(bo)
-	# cnt.commit()
-	# cnt.close()

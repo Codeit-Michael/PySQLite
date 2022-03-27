@@ -75,13 +75,3 @@ class Subject():
 
 if __name__ == '__main__':
 	pass
-	# g1 = Subject().create_subject('NSTP')
-	# g1 = Subject().add_professor('NSTP','Michael Maranan')
-	# p1 = Subject().add_related('NSTP','BSBA',1)
-
-	# cnt = sqlite3.connect('school.db')
-	# cursr = cnt.cursor()
-	# hello = cursr.execute("SELECT * FROM subjects").fetchall()
-	# print(hello)
-	# cnt.commit()
-	# cnt.close()
