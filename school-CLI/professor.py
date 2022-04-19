@@ -1,19 +1,15 @@
 import sqlite3
 import json
+from person import Person
+
 
 cnt = sqlite3.connect('school.db')
 cursr = cnt.cursor()
-class Professor:
+
+class Professor(Person):
 
 	def create_professor(self,firstname,lastname,sex,birthdate,age,phone,address,salary):
-		self.firstname = firstname
-		self.lastname = lastname
-		self.fullname = f'{self.firstname} {self.lastname}'
-		self.sex = sex
-		self.birthdate = birthdate
-		self.age = age
-		self.phone = phone
-		self.address = address
+		super().create_person(firstname,lastname,sex,birthdate,age,phone,address)
 		self.salary = salary
 		self.teaching = []
 
@@ -74,5 +70,6 @@ class Professor:
 
 
 if __name__ == "__main__":
-	hello = Professor().view_professors()
-	print(hello)
+	hello = Professor().create_professor('Kel','Mar','male','09/14/03',18,'09162667676','Maymangga,Cavite',0.0)
+	# hello = Professor().view_professors()
+	# print(hello)
