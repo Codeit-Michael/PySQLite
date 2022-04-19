@@ -36,7 +36,8 @@ class Professor:
 
 	def add_teaching(self,subject,professor):
 		# configuring objects
-		professor_subjects = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",professor).fetchall()
+		professor_subjects = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,))
+		professor_subjects = professor_subjects.fetchall()
 		self.teaching = json.loads(professor_subjects[0][0])
 		subject_list =  cursr.execute("SELECT name FROM subjects").fetchall()
 		subject_tuple = (subject,)
@@ -58,7 +59,8 @@ class Professor:
 
 
 	def get_salary(self,professor):
-		subjects = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,)).fetchone()
+		subjects = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,))
+		subjects = subjects.fetchone()
 		subject_list = json.loads(subjects[0])
 		salary = 5000 * len(subject_list)
 		return salary
@@ -66,10 +68,11 @@ class Professor:
 
 	def view_professors(self):
 		professor_table = cursr.execute("SELECT * FROM professors")
-		professor_list = professor_table.fetchall()
+		professor_table = professor_table.fetchall()
 		cnt.close()
-		return print(professor_list)
+		return print(professor_table)
 
 
 if __name__ == "__main__":
-	teachers = Professor().view_professors()
+	hello = Professor().view_professors()
+	print(hello)

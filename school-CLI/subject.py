@@ -73,5 +73,8 @@ class Subject():
 		return print(f'{subject} added in {course}-{yr} successfully')
 
 
-if __name__ == '__main__':
-	pass
+if __name__ == "__main__":
+	cnt = sqlite3.connect("school.db")
+	cursr = cnt.cursor()
+	hello = cursr.execute("SELECT * FROM subjects")
+	print(hello.fetchall())
