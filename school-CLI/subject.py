@@ -21,28 +21,30 @@ class Subject():
 		cnt.close()
 
 
-	def add_professor(self,subject,professor):
-		subject_tuple, professor_tuple = (subject,), (professor,)
-		if subject_tuple not in cursr.execute("SELECT name FROM subjects") or professor_tuple not in cursr.execute("SELECT fullname IN professors"):
-			return print('SUbject and/or Professor not found...')
+	def fetch_professor_subjects(self,professor):
+		professor_subjects = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,))
+		professor_subjects = professor_subjects.fetchone()
+		teaching = json.loads(professor_subjects[0])
+		return teaching
 
-		# configuring objects
-		professor_teachings = cursr.execute("SELECT teaching FROM professors WHERE fullname = ?",(professor,)).fetchone()
-		pt_list = json.loads(professor_teachings[0])
 
-		# looking if the subject has professor already
-		if cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)).fetchone()[0] != None:
-			return print('Subject has professor already...')
-		
-		# updating the server
+	def check_subject_existance(self,subject,teaching_list):
+		subject_prof = cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)).fetchone()[0]
+		if subject_prof != None:
+			return print(f'{Subject} has professor already assigned')
+		if subject in teaching_list:
+			return print('Professor has the subject already')
+
+
+	def add_professor(self,professor,subject):
+		self.teaching = self.fetch_professor_subjects(professor)
+		self.check_subject_existance(subject,self.teaching)
+		self.teaching.append(subject)
+		cursr.execute("UPDATE professors SET teaching = ? WHERE fullname = ?",(json.dumps(self.teaching),professor))
 		cursr.execute("UPDATE subjects SET professor = ? WHERE name = ?",(professor,subject))
-		cursr.execute("UPDATE professors SET teaching = ? WHERE fullname = ?",(json.dumps(pt_list),professor))
-
-		# saving and closing
 		cnt.commit()
 		cnt.close()
-
-		return print(f'Subject added to Prof.{professor}\'s teachings')
+		return print(f'Added {subject} into {professor}\'s teachings')
 
 
 	def add_related(self,subject,course,yr):

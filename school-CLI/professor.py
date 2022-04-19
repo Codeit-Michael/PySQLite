@@ -27,7 +27,6 @@ class Professor(Person):
 		))
 		cnt.commit()
 		cnt.close()
-		return print(f'{self.firstname} successfully created as a professor...')
 
 
 	def fetch_professor_subjects(self,professor):
@@ -37,20 +36,17 @@ class Professor(Person):
 		return teaching
 
 
-	def check_subject_existance(self,subject):
-		subject_list =  cursr.execute("SELECT name FROM subjects").fetchall()
-		subject_tuple = (subject,)
-		if subject_tuple not in subject_list:
-			return print('Subject doesn\'t exist...')
-		elif subject in self.teaching:
+	def check_subject_existance(self,subject,teaching_list):
+		subject_prof = cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)).fetchone()[0]
+		if subject_prof != None:
+			return print(f'{Subject} has professor already assigned')
+		if subject in teaching_list:
 			return print('Professor has the subject already')
-		if cursr.execute("SELECT professor FROM subjects WHERE name = ?",(subject,)).fetchone()[0] != None:
-			return print(f'{subject} has teacher already assigned')
 
 
-	def add_teaching(self,professor,subject):
+	def add_subject(self,professor,subject):
 		self.teaching = self.fetch_professor_subjects(professor)
-		self.check_subject_existance(subject,)
+		self.check_subject_existance(subject,self.teaching)
 		self.teaching.append(subject)
 		cursr.execute("UPDATE professors SET teaching = ? WHERE fullname = ?",(json.dumps(self.teaching),professor))
 		cursr.execute("UPDATE subjects SET professor = ? WHERE name = ?",(professor,subject))
@@ -75,6 +71,7 @@ class Professor(Person):
 
 
 if __name__ == "__main__":
+	pass
 	# hello = Professor().create_professor('Kel','Mar','male','09/14/03',18,'09162667676','Maymangga,Cavite',0.0)
 	# print(hello)	
-	Professor().add_teaching('Michael Maranan','Art Appreciation')
+	# Professor().add_professor_subject('Michael Maranan','Art Appreciation')
