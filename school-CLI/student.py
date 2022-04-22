@@ -1,18 +1,13 @@
 import sqlite3
+from person import Person
+
 
 class Student():
 	cnt = sqlite3.connect('school.db')
 	cursr = cnt.cursor()
 
 	def create_student(self,firstname,lastname,sex,birthdate,age,phone,address,Id,year,course):
-		self.firstname = firstname
-		self.lastname = lastname
-		self.fullname = f'{self.firstname} {self.lastname}',
-		self.sex = sex
-		self.birthdate = birthdate
-		self.age = age
-		self.phone = phone
-		self.address = address
+		super().create_person(firstname,lastname,sex,birthdate,age,phone,address)
 		self.year = year
 		self.course = course
 		course_id = f'{course}/yr-{yr}'
